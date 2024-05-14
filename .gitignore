@@ -3,3 +3,7 @@ images
 
 #pycache
 __pycache__
+
+#model
+*.pth
+*.pdf
