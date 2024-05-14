@@ -9,7 +9,7 @@ import cv2
 import torch
 
 # 비디오 파일 경로
-video_path = 'C:/Project/Model_Integration/images/free_video1.mp4'
+video_path = 'C:\\Project\\Model_Integration\\images\\zoom_example2.jpg'
 
 # 디바이스 설정
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
