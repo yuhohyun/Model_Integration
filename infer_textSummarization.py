@@ -14,7 +14,6 @@ text = input()
 print("========== Original Text ==========")
 print(text)
 print('\n')
-print("========== input_ids ==========")
 
 if text:
     input_ids = tokenizer.encode(text)
