@@ -1,9 +1,20 @@
 #data
 images
+audio/sample
+*.pdf
+*.txt
+*.srt
+*.vtt
+*.tsv
 
 #pycache
 __pycache__
 
 #model
 *.pth
-*.pdf
+*.bin
+*.json
+*.zip
+
+#env
+.env
