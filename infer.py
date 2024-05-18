@@ -9,8 +9,8 @@ from transformers.models.bart import BartForConditionalGeneration
 sys.path.append('./models/image_classification')
 sys.path.append('./models/text_classification')
 
-from models.image_classification.model import modified_PAtt_Lite
-from models.text_classification.model import CustomTransformerModel
+from models.image_classification.model import modified_PAtt_Lite # 표정 분류 모델 import
+from models.text_classification.model import CustomTransformerModel # 텍스트 감정 분석 모델 import
 
 # 이미지 분류 모델 로드
 image_model = modified_PAtt_Lite(num_classes=3, pretrained=False)
