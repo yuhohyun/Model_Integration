@@ -1,4 +1,5 @@
 import torch
+import glob
 from torchvision import transforms
 from PIL import Image
 import sys
@@ -77,7 +78,6 @@ def infer_text_classification(text):
 def infer_text_summarization(text):
     print("========== Original Text ==========")
     print(text)
-    print('\n')
 
     if text:
         input_ids = tokenizer_summarization.encode(text)
@@ -87,6 +87,28 @@ def infer_text_summarization(text):
         output = tokenizer_summarization.decode(output[0], skip_special_tokens=True)    
         print("========== Summary ==========")
         print(output)
+        print('\n')
+
+def process_text_files_for_summarization(directory):
+    """텍스트 요약을 위해 디렉토리의 모든 파일을 순차적으로 처리"""
+    file_paths = glob.glob(f"{directory}/*.txt")
+    for file_path in file_paths:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            text = file.read()
+            print(f"Processing file for summarization: {file_path}")
+            infer_text_summarization(text)
+            
+
+def process_text_files_for_classification(directory):
+    """텍스트 분류를 위해 디렉토리의 모든 파일을 순차적으로 처리"""
+    file_paths = glob.glob(f"{directory}/*.txt")
+    for file_path in file_paths:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            print(f"Processing file for classification: {file_path}")
+            for line in file:
+                result = infer_text_classification(line.strip())
+                print(f"Text: {line.strip()}\nClassified as: {result}")
+
 
 print("\nSelect the task:")
 print("1: Image Classification")
@@ -116,12 +138,11 @@ while True:
                 prediction_str = 'Unknown'
             print(f'Image {i+1} prediction: {prediction_str}')
     elif task_number == 2:  # 텍스트 분류
-        text = input("Enter the text for classification: ")
-        result = infer_text_classification(text)
-        print(f"Predicted class: {result}")
+        classification_directory = 'C:/Project/Model_Integration/transcripts/for_classification'
+        process_text_files_for_classification(classification_directory)
     elif task_number == 3:  # 텍스트 요약
-        text = input("Enter the text for summarization: ")
-        infer_text_summarization(text)
+        summary_directory = 'C:/Project/Model_Integration/transcripts/for_summary'
+        process_text_files_for_summarization(summary_directory)
     elif task_number == 0:  # 프로그램 종료
         print("Exiting the program.")
         break
