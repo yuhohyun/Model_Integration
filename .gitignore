@@ -1,6 +1,8 @@
 #data
+transcripts
 images
 audio/sample
+audio/temp
 *.pdf
 *.txt
 *.srt
