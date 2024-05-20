@@ -8,6 +8,9 @@ audio/temp
 *.srt
 *.vtt
 *.tsv
+*.mp4
+*.wav
+*.jpg
 
 #pycache
 __pycache__

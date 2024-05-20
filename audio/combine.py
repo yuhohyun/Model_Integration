@@ -2,7 +2,7 @@ from pydub import AudioSegment
 import os
 
 # 폴더 경로 설정
-folder_path = 'C:/project/Model_Integration/audios/sample'  # 폴더 경로 지정
+folder_path = 'C:/project/Model_Integration/audio/sample'  # 폴더 경로 지정
 
 # 모든 wav 파일 리스트 생성
 wav_files = [f for f in os.listdir(folder_path) if f.endswith('.wav')]

@@ -107,7 +107,7 @@ def process_text_files_for_classification(directory):
             print(f"Processing file for classification: {file_path}")
             for line in file:
                 result = infer_text_classification(line.strip())
-                print(f"Text: {line.strip()}\nClassified as: {result}")
+                print(f"Text: {line.strip()}\nClassified as: {result}\n")
 
 
 print("\nSelect the task:")
