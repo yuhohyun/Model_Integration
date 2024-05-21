@@ -20,6 +20,7 @@ __pycache__
 *.bin
 *.json
 *.zip
+*.dat
 
 #env
 .env

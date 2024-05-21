@@ -14,9 +14,9 @@ def split_audio_and_video(input_video_path, output_audio_path, output_video_path
     clip.without_audio().write_videofile(output_video_path, codec='libx264')
 
 # 비디오 경로 입력
-input_video_path = 'free_video.mp4'
-output_audio_path = 'output_audio.wav'
-output_video_path = 'output_video.mp4'
+input_video_path = 'C:/Project/Model_Integration/videos/free_video1.mp4'
+output_audio_path = 'C:/Project/Model_Integration/videos/output/wav/output_audio.wav'
+output_video_path = 'C:/Project/Model_Integration/videos/output/mp4/output_video.mp4'
 
 # split_audio_and_video 함수 호출
 split_audio_and_video(input_video_path, output_audio_path, output_video_path)
