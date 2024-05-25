@@ -11,6 +11,7 @@ audio/temp
 *.mp4
 *.wav
 *.jpg
+*.MOV
 
 #pycache
 __pycache__
