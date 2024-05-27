@@ -4,7 +4,6 @@ images
 audio/sample
 audio/temp
 *.pdf
-*.txt
 *.srt
 *.vtt
 *.tsv
