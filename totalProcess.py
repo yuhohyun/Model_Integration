@@ -78,6 +78,7 @@ def split_audio(audio_file):
     return parts
 
 def whisper(audio_file_path, output_dir="temp", model="whisper-1", language="ko"):
+    
     # API 키 로드
     OpenAI.api_key = os.getenv('OPENAI_API_KEY')
     client = OpenAI()
@@ -202,7 +203,7 @@ def detect_expression_change(current_landmarks, prev_landmarks):
     # 표정 변화가 있었는지 여부와 현재 랜드마크를 반환
     return expression_change, current_landmarks
 
-def process_video_frames(output_video_path, frame_interval=30):
+def process_video_frames(output_video_path, frame_interval=5):
     # 비디오 클립을 로드하고 총 프레임 수 계산
     clip = VideoFileClip(output_video_path)
     total_frames = int(clip.fps * clip.duration)
@@ -321,6 +322,23 @@ def videoProcess(videoPath):
         else:
             prediction_str = 'Unknown'
         print(f'Image {i + 1} prediction: {prediction_str}')
+    return predictions
+        
+def getScore(classification_results) :
+    
+    score = 0
+
+    for i in classification_results :
+        if i == 'neutral' :
+            score += 1
+        if i == 'negative' :
+            continue
+        if i == 'positive' :
+            score += 2
+    return score / len(classification_results) * 50
+
+def getImageScore(predictions) :
+    return sum(predictions) / len(predictions) * 50
 
 def main():
     # 음성 파일 경로 및 출력 디렉토리 설정
@@ -338,3 +356,4 @@ def main():
 # main 함수 호출
 if __name__ == "__main__":
     main()
+ 
