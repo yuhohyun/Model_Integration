@@ -10,6 +10,7 @@ import torchvision.transforms as transforms
 from pydub import AudioSegment
 from openai import OpenAI
 from dotenv import load_dotenv
+from gaze_tracking import GazeTracking
 from models.image_classification.model import modified_PAtt_Lite
 from transformers import ElectraModel, ElectraTokenizer, PreTrainedTokenizerFast
 from transformers.models.bart import BartForConditionalGeneration
@@ -288,6 +289,28 @@ def infer_image_classification(model, cropped_faces):
             predictions.append(prediction.item())  # 각 이미지에 대한 분류 결과 저장
     return predictions
 
+# Initialize gaze tracking
+def initializeGazeTracking():
+    gaze = GazeTracking()
+    return gaze
+
+# Process frame for gaze tracking
+def processGazeTracking(frame, gaze):
+    gaze.refresh(frame)
+    is_gaze_focused = gaze.is_right() or gaze.is_left() or gaze.is_center()
+    return is_gaze_focused
+
+# Calculate the concentration ratio
+def calculateConcentrationRatio(total_frames, focused_frames):
+    concentration_ratio = focused_frames / total_frames if total_frames > 0 else 0
+    return concentration_ratio
+
+# Print the progress of video processing
+def printProgress(current_frame, total_frames):
+    progress_percentage = (current_frame / total_frames) * 100
+    print(f"Processing video: {progress_percentage:.2f}% complete", end='\r')
+
+
 def audioProcess(audioPath, outputDir):
     # 음성 파일을 텍스트로 변환
     transcripts = whisper(audioPath, outputDir)
@@ -340,6 +363,35 @@ def getScore(classification_results) :
 def getImageScore(predictions) :
     return sum(predictions) / len(predictions) * 50
 
+def checkConcentration(videoPath):
+    gaze = initializeGazeTracking()
+    cap = cv2.VideoCapture(videoPath)
+    frameCount = 0
+    focusedCount = 0
+    totalFrames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
+    if not cap.isOpened():
+        print("Cannot open video file.")
+        return
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        if frameCount % 5 == 0:  # Process only every 5th frame
+            is_gaze_focused = processGazeTracking(frame, gaze)
+            if is_gaze_focused:
+                focusedCount += 1
+            printProgress(frameCount, totalFrames)
+
+        frameCount += 1
+
+    concentrationRatio = calculateConcentrationRatio(frameCount // 5, focusedCount)
+    print(f"\n{concentrationRatio:.4f}\n")
+    
+    return concentrationRatio
+    
 def main():
     # 음성 파일 경로 및 출력 디렉토리 설정
     audio = "C:/Project/Model_Integration/audio/sample/combined.wav"
@@ -351,7 +403,8 @@ def main():
     audioProcess(audio, output)
     # 비디오 파일 속 얼굴을 검출해 감정 분석을 수행하는 함수
     videoProcess(video)
-
+    # 집중도 계산
+    checkConcentration(video)
 
 # main 함수 호출
 if __name__ == "__main__":

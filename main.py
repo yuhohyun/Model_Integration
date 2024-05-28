@@ -6,6 +6,7 @@ from totalProcess import classify_sentences
 from totalProcess import getScore
 from totalProcess import videoProcess
 from totalProcess import getImageScore
+from totalProcess import checkConcentration
 import tempfile
 
 app = Flask(__name__)
@@ -44,6 +45,15 @@ def videoAnalysis() :
     score = getImageScore(predictions)
     
     return jsonify({"score": score})
+
+@app.route('/api/concentration', methods=['POST'])
+def concentration() :
+    file = request.files['file']
+    
+    concentrationRatio = checkConcentration(file)
+    
+    return concentrationRatio
+
 
 if __name__ == '__main__' :
     app.run(host='0.0.0.0', port=5000, debug=True)
