@@ -41,18 +41,18 @@ def videoAnalysis() :
         video_path = tmp.name
     
     predictions = videoProcess(video_path)
-    print(predictions)
+    concentrationRatio = checkConcentration(video_path)
     score = getImageScore(predictions)
     
-    return jsonify({"score": score})
+    return jsonify({"score": score, "concentrationRatio": concentrationRatio * 100})
 
-@app.route('/api/concentration', methods=['POST'])
-def concentration() :
-    file = request.files['file']
-    
-    concentrationRatio = checkConcentration(file)
-    
-    return concentrationRatio
+#@app.route('/api/concentration', methods=['POST'])
+#def concentration() :
+#    file = request.files['file']
+#    
+#    concentrationRatio = checkConcentration(file)
+#    
+#    return concentrationRatio
 
 
 if __name__ == '__main__' :
