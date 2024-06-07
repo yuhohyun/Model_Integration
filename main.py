@@ -18,8 +18,8 @@ def summarization() :
     
     transcripts = whisper(file)
     summaries = summarizeTexts(transcripts)
-    
-    return summaries
+        
+    return jsonify({'summary': summaries})
 
 @app.route('/api/audio_analysis', methods=['POST'])
 def audioAnalysis() :
